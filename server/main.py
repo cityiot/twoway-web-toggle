@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS #cross_origin
 
 import oriongw
@@ -16,10 +16,16 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello from CityIoT Oulu!'
 
-@app.route('/optimasolutions1')
+@app.route('/optimasolutions_get1')
 #@cross_origin(origins=cross_origins)
-def optimasolutions1():
+def optimasolutions_get1():
     return oriongw.get_optimasolutions_test()
+
+@app.route('/optimasolutions_set1', methods=['POST'])
+#@cross_origin(origins=cross_origins)
+def optimasolutions_set1():
+	idasdata = request.get_data(as_text=True, parse_form_data=False)
+	return oriongw.set_optimasolutions_test(idasdata)
 
 
 if __name__ == '__main__':

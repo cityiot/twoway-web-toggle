@@ -4,17 +4,18 @@ function init() {
 	toggle.addEventListener('change', (event) => {
 		if (event.target.checked) {
 			console.log('checked');
-			//getstate();
+			setstate('automatic');
 		} else {
 			console.log('not checked');
-			//getstate();
+			setstate('manual');
 		}
 	});
 
 	return toggle;
 }
 
-async function setstate(toggle) {
+
+async function setViewFromData(toggle) {
 	let wmode = await getstate();
 	if (wmode == 'automatic') {
 		console.log('Set toggle to: automatic');
@@ -26,7 +27,7 @@ async function setstate(toggle) {
 }
 
 async function getstate() {
-	const response = await fetch('https://cityiot-oulu.appspot.com/optimasolutions1');
+	const response = await fetch('https://cityiot-oulu.appspot.com/optimasolutions_get1');
 	const rjson = await response.json();
 	//console.log(JSON.stringify(rjson));
 
@@ -37,8 +38,28 @@ async function getstate() {
 	return wmode;
 }
 
+async function setstate(statestring) {
+	//const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
+	const url = 'http://localhost:8080/optimasolutions_set1'
+	const postDataText = `wms|${statestring}`;
+
+	try {
+		const response = await fetch(url, {
+			method: 'POST', // or 'PUT'
+			body: postDataText,
+			headers: {
+				'Content-Type': 'text/plain'
+			}
+		});
+		const text = await response.text();
+		console.log('Success:', text);
+	} catch (error) {
+		console.error('Error:', error);
+	}
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
 	console.log("DOMContentLoaded");
 	const toggle = init();
-	setstate(toggle);
+	setViewFromData(toggle);
 });
