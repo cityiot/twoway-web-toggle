@@ -39,8 +39,8 @@ async function getstate() {
 }
 
 async function setstate(statestring) {
-	//const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
-	const url = 'http://localhost:8080/optimasolutions_set1'
+	const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
+	//const url = 'http://localhost:8080/optimasolutions_set1'
 	const postDataText = `wms|${statestring}`;
 
 	try {
