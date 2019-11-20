@@ -24,12 +24,14 @@ def get_from_orion(entity_id="", fiware_service="example", fiware_service_path="
 
 def get_optimasolutions_test():
 	rjson = get_from_orion('lamuskakuja-pylvas-slcc-en-t2', 'optimasolutions_t2', '/lamuskakuja/piha_t2', 'http://pan0108.panoulu.net:8000')
-	wmodedata = rjson['workingMode']
-	wmode = wmodedata['value']
-	print(wmode)
+	#wmodedata = rjson['workingMode']
+	#wmode = wmodedata['value']
+	#we actually just pass the json on now
+	#print(wmode)
+	return rjson
 
 if __name__ == '__main__':
-	get_optimasolutions_test()
+	print(get_optimasolutions_test())
 	
 
 """

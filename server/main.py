@@ -1,14 +1,25 @@
 from flask import Flask
+from flask_cors import CORS #cross_origin
+
+import oriongw
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__)
+CORS(app)
 
+#cross_origins = ['*']
 
 @app.route('/')
+#@cross_origin(origins=cross_origins)
 def hello():
     """Return a friendly HTTP greeting."""
-    return 'Hello World!'
+    return 'Hello from CityIoT Oulu!'
+
+@app.route('/optimasolutions1')
+#@cross_origin(origins=cross_origins)
+def optimasolutions1():
+    return oriongw.get_optimasolutions_test()
 
 
 if __name__ == '__main__':
