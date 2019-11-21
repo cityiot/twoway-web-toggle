@@ -31,9 +31,11 @@ async function getstate() {
 	const rjson = await response.json();
 	//console.log(JSON.stringify(rjson));
 
-	const wmodedata = rjson['workingMode'];
+	//Ossi's two variable system to make robust. Not configed to use now to test web ui, while his notification thing is not on
+	//const wmodedata = rjson['workingMode'];
+	const wmodedata = rjson['workingModeSet']; //this is what IDAS sets, and it's then reflected to workingMode. new Orion with notify-only-changed might well fix the need for this.
 	const wmode = wmodedata['value'];
-	console.log("Got mode: " + wmode);
+	//console.log("Got mode: " + wmode);
 
 	return wmode;
 }
@@ -42,6 +44,7 @@ async function setstate(statestring) {
 	const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
 	//const url = 'http://localhost:8080/optimasolutions_set1'
 	const postDataText = `wms|${statestring}`;
+	console.log(`Sending IDAS state: ${postDataText}`);
 
 	try {
 		const response = await fetch(url, {
@@ -62,4 +65,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	console.log("DOMContentLoaded");
 	const toggle = init();
 	setViewFromData(toggle);
+
+	// repeat with the interval of 2 seconds (10 now)
+	let timerId = setInterval(() => setViewFromData(toggle), 10000);
+
+	// after 5 seconds stop
+	//setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
 });
