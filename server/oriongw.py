@@ -25,18 +25,24 @@ def get_from_orion(entity_id="", fiware_service="example", fiware_service_path="
 
 	return rjson
 
-def get_optimasolutions_test():
-	rjson = get_from_orion('lamuskakuja-pylvas-slcc-en-t2', 'optimasolutions_t2', '/lamuskakuja/piha_t2', 'http://pan0108.panoulu.net:8000')
+def get_optimasolutions_test1():
+	rjson1 = get_from_orion('lamuskakuja-pylvas-slcc-en-t2', 'optimasolutions_t2', '/lamuskakuja/piha_t2', 'http://pan0108.panoulu.net:8000')
+
 	#wmodedata = rjson['workingMode']
 	#wmode = wmodedata['value']
 	#we actually just pass the json on now
 	#print(wmode)
-	return rjson
+	return rjson1
+
+def get_optimasolutions_test2():
+    rjson2 = get_from_orion('lamuskakuja-pylvas-slg-en-t2', 'optimasolutions_t2', '/lamuskakuja/piha_t2', 'http://pan0108.panoulu.net:8000')
+    return rjson2
 
 def set_optimasolutions_test(idasdata):
 	headers = make_headers('optimasolutions_t2', '/lamuskakuja/piha_t2')
 	#request_url = f"{base_url}{base_path}{entity_id}"
 	request_url = "http://pan0108.panoulu.net:8000/idasdata/iot/d?k=lamuskakuja-pylvas-slcc-en-t2-apikey&i=lamuskakuja-pylvas-slcc-en-dev-t2"
+    #XXX TODO: setting PowerState needs different entity
 	response = requests.post(request_url, data=idasdata)
 	#print(dir(response))
 	responsetext = response.text

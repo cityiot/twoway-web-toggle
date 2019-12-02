@@ -29,31 +29,52 @@ function idasCommandString(attribute, value) {
     return `${attribute}|${value}`; //`wms|${statestring}`
 }
 
-
-async function setViewFromData(toggle) {
-	let wmode = await getstate();
-	if (wmode == 'automatic') {
-		console.log('Set toggle to: automatic');
-		toggle.checked = true;
-	} else {
-		console.log('Set toggle to: not automatic');
-		toggle.checked = false;
-	}
+async function setViewFromDataWithGetterToToggle(getter, attrval, toggle) {
+    let val = await getter();
+    if (val == attrval) {
+        console.log('Set toggle to:' + attrval);
+        toggle.checked = true;
+    } else {
+        console.log('Set toggle to: not ' + attrval);
+        toggle.checked = false;
+    }
 }
 
-async function getstate() {
-	const response = await fetch('https://cityiot-oulu.appspot.com/optimasolutions_get1');
-	const rjson = await response.json();
-	//console.log(JSON.stringify(rjson));
+async function setViewFromData(toggles) {
+    setViewFromDataWithGetterToToggle(getstate1, 'automatic', toggles[0]);
+    setViewFromDataWithGetterToToggle(getstate2, 'on', toggles[1]);
+}
 
+async function getstateOfAttr(getterurl, attribute) {
+    //const baseurl = 'https://cityiot-oulu.appspot.com/';
+    const baseurl = 'http://localhost:8080/';
+
+    const response = await fetch(baseurl + getterurl); //optimasolutions_get2
+    const rjson = await response.json();
+
+    const attrdata = rjson[attribute];
+    const attrval = attrdata['value'];
+    return attrval;
+}
+
+async function getstate1() {
+    //this is what IDAS sets, and it's then reflected to workingMode. new Orion with notify-only-changed might well fix the need for this.
+    const wmode = getstateOfAttr("optimasolutions_get1", 'workingModeSet')
+	//console.log(JSON.stringify(rjson1));
 	//Ossi's two variable system to make robust. Not configed to use now to test web ui, while his notification thing is not on
 	//const wmodedata = rjson['workingMode'];
-	const wmodedata = rjson['workingModeSet']; //this is what IDAS sets, and it's then reflected to workingMode. new Orion with notify-only-changed might well fix the need for this.
-	const wmode = wmodedata['value'];
-	//console.log("Got mode: " + wmode);
+	console.log("Got workingModeSet: " + wmode);
 
 	return wmode;
 }
+
+async function getstate2() {
+    const pss = getstateOfAttr('optimasolutions_get2', 'powerState');
+    console.log("Got powerState: " + pss);
+
+    return pss;
+}
+
 
 async function setstate(attribute, value) {
 	const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
@@ -80,10 +101,10 @@ async function setstate(attribute, value) {
 window.addEventListener('DOMContentLoaded', (event) => {
 	console.log("DOMContentLoaded");
 	const toggles = init();
-	//setViewFromData(toggles);
+	setViewFromData(toggles);
 
 	// repeat with the interval of 2 seconds (10 now)
-	//let timerId = setInterval(() => setViewFromData(toggle), 10000);
+	let timerId = setInterval(() => setViewFromData(toggles), 3000);
 
 	// after 5 seconds stop
 	//setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);

@@ -19,7 +19,12 @@ def hello():
 @app.route('/optimasolutions_get1')
 #@cross_origin(origins=cross_origins)
 def optimasolutions_get1():
-    return oriongw.get_optimasolutions_test()
+    return oriongw.get_optimasolutions_test1()
+
+@app.route('/optimasolutions_get2')
+#@cross_origin(origins=cross_origins)
+def optimasolutions_get2():
+    return oriongw.get_optimasolutions_test2()
 
 @app.route('/optimasolutions_set1', methods=['POST'])
 #@cross_origin(origins=cross_origins)
