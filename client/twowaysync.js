@@ -1,17 +1,32 @@
 function init() {
-	const toggle = document.getElementById("toggle1");
+    const toggle1 = document.getElementById("toggle1");
+    const toggle2 = document.getElementById("toggle2");
 
-	toggle.addEventListener('change', (event) => {
+	toggle1.addEventListener('change', (event) => {
 		if (event.target.checked) {
-			console.log('checked');
-			setstate('automatic');
+            console.log('checked');
+			setstate('wms', 'automatic');
 		} else {
 			console.log('not checked');
-			setstate('manual');
+            setstate('wms', 'manual');
 		}
-	});
+    });
 
-	return toggle;
+    toggle2.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            console.log('checked');
+            setstate('pss', 'on');
+        } else {
+            console.log('not checked');
+            setstate('pss', 'off');
+        }
+    });
+
+	return [toggle1, toggle2];
+}
+
+function idasCommandString(attribute, value) {
+    return `${attribute}|${value}`; //`wms|${statestring}`
 }
 
 
@@ -40,10 +55,11 @@ async function getstate() {
 	return wmode;
 }
 
-async function setstate(statestring) {
+async function setstate(attribute, value) {
 	const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
 	//const url = 'http://localhost:8080/optimasolutions_set1'
-	const postDataText = `wms|${statestring}`;
+    
+    const postDataText = idasCommandString(attribute, value);
 	console.log(`Sending IDAS state: ${postDataText}`);
 
 	try {
@@ -63,11 +79,11 @@ async function setstate(statestring) {
 
 window.addEventListener('DOMContentLoaded', (event) => {
 	console.log("DOMContentLoaded");
-	const toggle = init();
-	setViewFromData(toggle);
+	const toggles = init();
+	//setViewFromData(toggles);
 
 	// repeat with the interval of 2 seconds (10 now)
-	let timerId = setInterval(() => setViewFromData(toggle), 10000);
+	//let timerId = setInterval(() => setViewFromData(toggle), 10000);
 
 	// after 5 seconds stop
 	//setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
