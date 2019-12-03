@@ -59,11 +59,11 @@ async function getstateOfAttr(getterurl, attribute) {
 
 async function getstate1() {
     //this is what IDAS sets, and it's then reflected to workingMode. new Orion with notify-only-changed might well fix the need for this.
-    const wmode = getstateOfAttr("optimasolutions_get1", 'workingModeSet')
+    const wmode = getstateOfAttr("optimasolutions_get1", 'workingMode')
 	//console.log(JSON.stringify(rjson1));
 	//Ossi's two variable system to make robust. Not configed to use now to test web ui, while his notification thing is not on
 	//const wmodedata = rjson['workingMode'];
-	console.log("Got workingModeSet: " + wmode);
+	console.log("Got workingMode: " + wmode);
 
 	return wmode;
 }
