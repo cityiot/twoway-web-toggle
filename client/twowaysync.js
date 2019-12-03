@@ -46,8 +46,8 @@ async function setViewFromData(toggles) {
 }
 
 async function getstateOfAttr(getterurl, attribute) {
-    //const baseurl = 'https://cityiot-oulu.appspot.com/';
-    const baseurl = 'http://localhost:8080/';
+    const baseurl = 'https://cityiot-oulu.appspot.com/';
+    //const baseurl = 'http://localhost:8080/';
 
     const response = await fetch(baseurl + getterurl); //optimasolutions_get2
     const rjson = await response.json();
@@ -77,8 +77,8 @@ async function getstate2() {
 
 
 async function setstateOfAttr(setterurl, attribute, value) {
-	//const baseUrl = 'https://cityiot-oulu.appspot.com/'
-	const baseUrl = 'http://localhost:8080/'
+	const baseUrl = 'https://cityiot-oulu.appspot.com/'
+	//const baseUrl = 'http://localhost:8080/'
 
     const url = baseUrl + setterurl;
     
