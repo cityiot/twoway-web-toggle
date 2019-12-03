@@ -38,17 +38,25 @@ def get_optimasolutions_test2():
     rjson2 = get_from_orion('lamuskakuja-pylvas-slg-en-t2', 'optimasolutions_t2', '/lamuskakuja/piha_t2', 'http://pan0108.panoulu.net:8000')
     return rjson2
 
-def set_optimasolutions_test(idasdata):
+def set_optimasolutions_test(idasparams, idasdata):
 	headers = make_headers('optimasolutions_t2', '/lamuskakuja/piha_t2')
 	#request_url = f"{base_url}{base_path}{entity_id}"
-	request_url = "http://pan0108.panoulu.net:8000/idasdata/iot/d?k=lamuskakuja-pylvas-slcc-en-t2-apikey&i=lamuskakuja-pylvas-slcc-en-dev-t2"
-    #XXX TODO: setting PowerState needs different entity
+	request_url = f"http://pan0108.panoulu.net:8000/idasdata/iot/d?{idasparams}"
+
+	print(f"Sending set POST: {request_url} : {idasdata}")
 	response = requests.post(request_url, data=idasdata)
 	#print(dir(response))
 	responsetext = response.text
 	#print(responsetext) #apparently empty from IDAS
 	return responsetext 
 
+def set_optimasolutions_test1(idasdata):
+    idasparams = "k=lamuskakuja-pylvas-slcc-en-t2-apikey&i=lamuskakuja-pylvas-slcc-en-dev-t2"
+    return set_optimasolutions_test(idasparams, idasdata)
+
+def set_optimasolutions_test2(idasdata):
+    idasparams = "k=lamuskakuja-pylvas-slg-en-t2-apikey&i=lamuskakuja-pylvas-slg-en-dev-t2"
+    return set_optimasolutions_test(idasparams, idasdata)
 
 if __name__ == '__main__':
 	print(get_optimasolutions_test())

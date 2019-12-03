@@ -5,20 +5,20 @@ function init() {
 	toggle1.addEventListener('change', (event) => {
 		if (event.target.checked) {
             console.log('checked');
-			setstate('wms', 'automatic');
+			setstate1('wms', 'automatic');
 		} else {
 			console.log('not checked');
-            setstate('wms', 'manual');
+            setstate1('wms', 'manual');
 		}
     });
 
     toggle2.addEventListener('change', (event) => {
         if (event.target.checked) {
             console.log('checked');
-            setstate('pss', 'on');
+            setstate2('pss', 'on');
         } else {
             console.log('not checked');
-            setstate('pss', 'off');
+            setstate2('pss', 'off');
         }
     });
 
@@ -76,9 +76,11 @@ async function getstate2() {
 }
 
 
-async function setstate(attribute, value) {
-	const url = 'https://cityiot-oulu.appspot.com/optimasolutions_set1'
-	//const url = 'http://localhost:8080/optimasolutions_set1'
+async function setstateOfAttr(setterurl, attribute, value) {
+	//const baseUrl = 'https://cityiot-oulu.appspot.com/'
+	const baseUrl = 'http://localhost:8080/'
+
+    const url = baseUrl + setterurl;
     
     const postDataText = idasCommandString(attribute, value);
 	console.log(`Sending IDAS state: ${postDataText}`);
@@ -96,6 +98,16 @@ async function setstate(attribute, value) {
 	} catch (error) {
 		console.error('Error:', error);
 	}
+}
+
+async function setstate1(attribute, value) {
+    const setterurl = "optimasolutions_set1";
+    setstateOfAttr(setterurl, attribute, value);
+}
+
+async function setstate2(attribute, value) {
+    const setterurl = "optimasolutions_set2";
+    setstateOfAttr(setterurl, attribute, value);
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
