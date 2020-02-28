@@ -7,8 +7,8 @@ def make_headers(fiware_service, fiware_service_path, accept="application/json")
 	headers = {
 		"Fiware-Service": fiware_service,
 		"Fiware-ServicePath": fiware_service_path,
-		"Accept": accept,
-		"platform-apikey": "***REMOVED***"
+		"Accept": accept
+		#not needed in sandbox: "platform-apikey": ""
 	}
 
 	return headers
